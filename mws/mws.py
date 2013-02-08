@@ -179,7 +179,7 @@ class MWS(object):
                 parsed_response = DataWrapper(data, response.headers)
 
         except HTTPError, e:
-            error = MWSError(e.message)
+            error = MWSError(str(e))
             error.response = getattr(e, 'response')
             raise error
 
@@ -469,7 +469,7 @@ class Products(MWS):
         data.update(self.enumerate_param('SellerSKUList.SellerSKU.', skus))
         return self.make_request(data)
 
-    def get_lowest_offer_listings_for_asin(self, marketplaceid, asins, condition="All", excludeme=False):
+    def get_lowest_offer_listings_for_asin(self, marketplaceid, asins, condition="Any", excludeme=False):
         data = dict(Action='GetLowestOfferListingsForASIN',
                     MarketplaceId=marketplaceid,
                     ItemCondition=condition,
