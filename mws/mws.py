@@ -239,7 +239,7 @@ class Feeds(MWS):
     def get_feed_submission_list(self, feedids=(), max_count=None, feedtypes=(),
                                     processingstatuses=(), fromdate=None, todate=None):
         data = dict(Action='GetFeedSubmissionList',
-                    MaxCount=max_count,
+                    MaxCount=str(max_count),
                     SubmittedFromDate=fromdate,
                     SubmittedToDate=todate,)
         data.update(self.enumerate_param('FeedSubmissionIdList.Id', feedids))
@@ -297,7 +297,7 @@ class Reports(MWS):
                     Acknowledged=acknowledged,
                     AvailableFromDate=fromdate,
                     AvailableToDate=todate,
-                    MaxCount=max_count)
+                    MaxCount=str(max_count))
         data.update(self.enumerate_param('ReportRequestIdList.Id.', requestids))
         data.update(self.enumerate_param('ReportTypeList.Type.', types))
         return self.make_request(data)
@@ -317,7 +317,7 @@ class Reports(MWS):
     def get_report_request_list(self, requestids=(), types=(), processingstatuses=(),
                                 max_count=None, fromdate=None, todate=None):
         data = dict(Action='GetReportRequestList',
-                    MaxCount=max_count,
+                    MaxCount=str(max_count),
                     RequestedFromDate=fromdate,
                     RequestedToDate=todate)
         data.update(self.enumerate_param('ReportRequestIdList.Id.', requestids))
@@ -449,19 +449,19 @@ class Products(MWS):
         data.update(self.enumerate_param('ASINList.ASIN.', asins))
         return self.make_request(data)
 
-    def get_lowest_offer_listings_for_sku(self, marketplaceid, skus, condition="Any", excludeme=False):
+    def get_lowest_offer_listings_for_sku(self, marketplaceid, skus, condition="Any", excludeme="False"):
         data = dict(Action='GetLowestOfferListingsForSKU',
                     MarketplaceId=marketplaceid,
                     ItemCondition=condition,
-                    ExcludeMe=excludeme)
+                    ExcludeMe=str(excludeme))
         data.update(self.enumerate_param('SellerSKUList.SellerSKU.', skus))
         return self.make_request(data)
 
-    def get_lowest_offer_listings_for_asin(self, marketplaceid, asins, condition="Any", excludeme=False):
+    def get_lowest_offer_listings_for_asin(self, marketplaceid, asins, condition="Any", excludeme="False"):
         data = dict(Action='GetLowestOfferListingsForASIN',
                     MarketplaceId=marketplaceid,
                     ItemCondition=condition,
-                    ExcludeMe=excludeme)
+                    ExcludeMe=str(excludeme))
         data.update(self.enumerate_param('ASINList.ASIN.', asins))
         return self.make_request(data)
 
