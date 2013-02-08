@@ -50,15 +50,6 @@ def remove_empty(d):
             del d[key]
     return d
 
-def stringify_bool(d):
-    """
-        Prevents AttributeError Exceptions, urllib uses rstrip() on boolean
-        values, this turns them into strings.
-    """
-    for key in d.keys():
-        if isinstance(d[key], bool):
-            d[key] = str(d[key])
-    return d
 
 def remove_namespace(xml):
     regex = re.compile(' xmlns(:ns2)?="[^"]+"|(ns2:)|(xml:)')
@@ -140,9 +131,6 @@ class MWS(object):
         # Remove all keys with an empty value because
         # Amazon's MWS does not allow such a thing.
         extra_data = remove_empty(extra_data)
-
-        # Turn boolean values into strings
-        extra_data = stringify_bool(extra_data)
 
         params = {
             'AWSAccessKeyId': self.access_key,
