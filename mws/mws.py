@@ -389,8 +389,79 @@ class Reports(MWS):
         data.update(self.enumerate_param('ReportTypeList.Type.', types))
         return self.make_request(data)
 
-
 class Orders(MWS):
+    """ Amazon Orders API """
+
+    URI = "/Orders/2013-09-01"
+    VERSION = "2013-09-01"
+    NS = '{https://mws.amazonservices.com/Orders/2013-09-01}'
+
+    def list_orders(self, marketplaceids, created_after=None, created_before=None, lastupdatedafter=None,
+                    lastupdatedbefore=None, orderstatus=(), fulfillment_channels=(),
+                    payment_methods=(), buyer_email=None, seller_orderid=None, max_results='100', cba_displayable_shipping_label=None,
+                    order_type=None, earliest_ship_date=None, latest_ship_date=None, tfm_shipment_status=None
+                    ):
+
+        data = dict(Action='ListOrders',
+                    CreatedAfter=created_after,
+                    CreatedBefore=created_before,
+                    LastUpdatedAfter=lastupdatedafter,
+                    LastUpdatedBefore=lastupdatedbefore,
+                    BuyerEmail=buyer_email,
+                    SellerOrderId=seller_orderid,
+                    MaxResultsPerPage=max_results,
+                    CbaDisplayableShippingLabel=cba_displayable_shipping_label, # This is US, UK, and Germany only
+                    OrderType=order_type, # JP only
+                    EarliestShipDate=earliest_ship_date, # JP only
+                    LatestShipDate=latest_ship_date, # JP only
+                    TFMShipmentStatus=tfm_shipment_status # China only
+                    )
+        data.update(self.enumerate_param('OrderStatus.Status.', orderstatus))
+        data.update(self.enumerate_param('MarketplaceId.Id.', marketplaceids))
+        data.update(self.enumerate_param('FulfillmentChannel.Channel.', fulfillment_channels))
+        data.update(self.enumerate_param('PaymentMethod.Method.', payment_methods))
+        return self.make_request(data)
+
+    def list_orders_by_next_token(self, token, CbaDisplayableShippingLabel=None, order_type=None
+                                  earliest_ship_date=None, latest_ship_date=None):
+
+        data = dict(Action='ListOrdersByNextToken',
+                    NextToken=token,
+                    CbaDisplayableShippingLabel=cba_displayable_shipping_label, # This is US, UK, and Germany only
+                    OrderType=order_type, # JP only
+                    EarliestShipDate=earliest_ship_date, # JP only
+                    LatestShipDate=latest_ship_date, # JP only
+                    )
+        return self.make_request(data)
+
+    def get_order(self, amazon_order_ids, CbaDisplayableShippingLabel=None, order_type=None
+                  earliest_ship_date=None, latest_ship_date=None):
+        
+        data = dict(Action='GetOrder',
+                    CbaDisplayableShippingLabel=cba_displayable_shipping_label, # This is US, UK, and Germany only
+                    OrderType=order_type, # JP only
+                    EarliestShipDate=earliest_ship_date, # JP only
+                    LatestShipDate=latest_ship_date, # JP only
+                    )
+        data.update(self.enumerate_param('AmazonOrderId.Id.', amazon_order_ids))
+        return self.make_request(data)
+
+    def list_order_items(self, amazon_order_id, scheduled_delivery_start_date=None, scheduled_delivery_end_date=None):
+        data = dict(Action='ListOrderItems',
+                    AmazonOrderId=amazon_order_id,
+                    ScheduledDeliveryStartDate=scheduled_delivery_start_date,
+                    ScheduledDeliveryEndDate=scheduled_delivery_end_date)
+        return self.make_request(data)
+
+    def list_order_items_by_next_token(self, token, scheduled_delivery_start_date=None, scheduled_delivery_end_date=None):
+        data = dict(Action='ListOrderItemsByNextToken',
+                    NextToken=token,
+                    ScheduledDeliveryStartDate=scheduled_delivery_start_date,
+                    ScheduledDeliveryEndDate=scheduled_delivery_end_date)
+        return self.make_request(data)
+
+
+class Orders_Deprecated(MWS):
     """ Amazon Orders API """
 
     URI = "/Orders/2011-01-01"
