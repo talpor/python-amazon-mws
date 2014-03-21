@@ -434,7 +434,7 @@ class Orders(MWS):
                     )
         return self.make_request(data)
 
-    def get_order(self, amazon_order_ids, CbaDisplayableShippingLabel=None, order_type=None
+    def get_order(self, amazon_order_ids, CbaDisplayableShippingLabel=None, order_type=None,
                   earliest_ship_date=None, latest_ship_date=None):
         
         data = dict(Action='GetOrder',
