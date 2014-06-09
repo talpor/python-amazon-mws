@@ -432,11 +432,12 @@ class Orders(MWS):
                     EarliestShipDate=earliest_ship_date, # JP only
                     LatestShipDate=latest_ship_date, # JP only
                     )
+
         return self.make_request(data)
 
-    def get_order(self, amazon_order_ids, CbaDisplayableShippingLabel=None, order_type=None,
-                  earliest_ship_date=None, latest_ship_date=None):
-        
+    def get_order(self, amazon_order_ids, CbaDisplayableShippingLabel=None,
+                  order_type=None, earliest_ship_date=None, latest_ship_date=None):
+
         data = dict(Action='GetOrder',
                     CbaDisplayableShippingLabel=cba_displayable_shipping_label, # This is US, UK, and Germany only
                     OrderType=order_type, # JP only
