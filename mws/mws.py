@@ -426,7 +426,7 @@ class Orders(MWS):
                                   earliest_ship_date=None, latest_ship_date=None):
 
         data = dict(Action='ListOrdersByNextToken',
-                    NextToken=token,
+                    NextToken=token['value'],
                     CbaDisplayableShippingLabel=cba_displayable_shipping_label, # This is US, UK, and Germany only
                     OrderType=order_type, # JP only
                     EarliestShipDate=earliest_ship_date, # JP only
